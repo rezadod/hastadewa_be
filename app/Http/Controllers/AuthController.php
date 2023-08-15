@@ -53,7 +53,6 @@ class AuthController extends Controller
         ]);
 
 
-
         if ($user) {
             return response()->json(['message' => 'Successfully registered']);
         } else {
@@ -74,7 +73,9 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        // return $this->respondWithToken($token);
+
+        return view('input_stok');
     }
 
     /**
