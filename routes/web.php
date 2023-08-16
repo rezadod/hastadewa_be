@@ -20,9 +20,11 @@ Route::get('cek', [UserController::class, 'cek'])->name('cek');
 Route::get('daftar', [UserController::class, 'daftar'])->name('daftar');
 Route::get('masuk', [UserController::class, 'masuk'])->name('masuk');
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('input_stok', [StockController::class, 'input_stok'])->name('input_stok');
-});
+// Route::group(['middleware' => ['auth']], function () {
+// });
+Route::get('input_stok', [StockController::class, 'input_stok'])->name('input_stok');
+Route::post('tambah_stok', [UserController::class, 'tambah_stok'])->name('tambah_stok');
+Route::get('tampilan_stok', [UserController::class, 'tampilan_stok'])->name('tampilan_stok');
 
 Route::group([
     'middleware' => 'api',

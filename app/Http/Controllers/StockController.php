@@ -36,19 +36,6 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $userId = Auth::user()->id;
-
-        dd($userId);
-
-        $validator = Validator::make(request()->all(), [
-            'nama_barang' => 'required',
-            'harga_beli' => 'required|email|unique:users',
-            'harga_jual' => 'required',
-            'jumlah_stok' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages());
-        }
     }
 
     /**
@@ -95,5 +82,4 @@ class StockController extends Controller
     {
         //
     }
-    
 }
