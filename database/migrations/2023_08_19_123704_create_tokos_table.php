@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('toko', function (Blueprint $table) {
             $table->id();
-            $table->string('deskripsi');
+            $table->string('nama_toko')->unique();
+            $table->string('alamat');
+            $table->bigInteger('kategori_toko');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('toko');
     }
 };

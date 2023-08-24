@@ -1,4 +1,4 @@
-@extends('layouts.master')
+<!-- @extends('layouts.master')
 <style>
     table {
         text-align: center;
@@ -65,4 +65,4 @@
     }
 </script>
 
-@endsection
+@endsection -->

@@ -28,7 +28,9 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'nama_pemilik' => 'required',
+            'no_hp' => 'required',
             'nama_toko' => 'required',
+            'alamat' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -36,19 +38,18 @@ class AuthController extends Controller
         }
 
         $toko = Toko::create([
-            'nama_pemilik' => request('nama_pemilik'),
-            'nama_toko' => request('nama_toko')
-
+            'nama_toko' => request('nama_toko'),
+            'alamat' => request('alamat')
         ]);
 
         // dd($toko->id);
         $user = User::create([
             'username' => request("username"),
-
             'email' => request("email"),
             'password' => Hash::make(
                 request("password"),
             ),
+            'nama_pemilik' => request("nama_pemilik"),
             'toko_id' => $toko->id,
         ]);
 
@@ -73,9 +74,13 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // return $this->respondWithToken($token);
 
-        return view('input_stok');
+        return response()->json([
+            'success' => true,
+            'data' => auth()->guard('api')->user(),
+            'token' => $token,
+        ]);
+        // return view('input_stok');
     }
 
     /**
