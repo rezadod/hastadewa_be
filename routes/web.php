@@ -37,7 +37,7 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('user', [AuthController::class, 'user']);
 
-    Route::post('add_stock', [StockController::class, 'store']);
+    Route::post('tambah_stock', [StockController::class, 'store']);
 });
 
 Route::get('/', function () {

@@ -5,8 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penjualan extends Model
+class Optional extends Model
 {
-    protected $table = 'penjualan';
     use HasFactory;
+    protected $table = 'optional';
+    protected $fillable = [
+        'nama_barang',
+        'jumlah',
+    ];
 }

@@ -27,7 +27,7 @@ class AuthController extends Controller
             'username' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
-            'nama_pemilik' => 'required',
+            'nama_pemilik_toko' => 'required',
             'no_hp' => 'required',
             'nama_toko' => 'required',
             'alamat' => 'required',
@@ -39,18 +39,23 @@ class AuthController extends Controller
 
         $toko = Toko::create([
             'nama_toko' => request('nama_toko'),
-            'alamat' => request('alamat')
+            'nama_pemilik_toko' => request('nama_pemilik_toko'),
+            'status_toko' => 1,
+            'jenis_usaha' => 1,
+            'alamat' => request('alamat'),
         ]);
 
         // dd($toko->id);
         $user = User::create([
-            'username' => request("username"),
             'email' => request("email"),
             'password' => Hash::make(
                 request("password"),
             ),
-            'nama_pemilik' => request("nama_pemilik"),
+            'no_hp' => request("no_hp"),
             'toko_id' => $toko->id,
+            'role_id' => 1,
+            'username' => request("username"),
+
         ]);
 
 

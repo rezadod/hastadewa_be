@@ -38,10 +38,13 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make(request()->all(), [
-            'nama_barang' => 'required',
+            'nama_produk' => 'required',
             'harga_beli' => 'required',
-            'harga_jual' => 'required',
-            'jumlah_stock' => 'required',
+            'kuantiti' => 'required',
+            'isi_per_pack' => 'required',
+            'harga_per_pcs' => 'required',
+            'harga_per_pack' => 'required',
+
         ]);
 
         if ($validator->fails()) {
@@ -49,11 +52,13 @@ class StockController extends Controller
         }
         // dd(Auth::user()->id);
         Stock::create([
-            'nama_barang' => request('nama_barang'),
+            'nama_produk' => request('nama_produk'),
             'harga_beli' => request('harga_beli'),
-            'harga_jual' => request('harga_jual'),
-            'jumlah_stock' => request('jumlah_stock'),
-            'user_id' => Auth::user()->id,
+            'kuantiti' => request('kuantiti'),
+            'isi_per_pack' => request('isi_per_pack'),
+            'harga_per_pcs' => request('harga_per_pcs'),
+            'harga_per_pack' => request('harga_per_pack'),
+            'user_name_input' => Auth::user()->id,
         ]);
         return response()->json([
             'success' => true,
