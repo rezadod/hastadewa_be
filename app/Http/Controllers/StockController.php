@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 
 class StockController extends Controller
 {
@@ -16,7 +18,15 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        $stock = DB::table('stock')
+            ->select('*')
+            ->get();
+
+        $data = [
+            'data_stock' => $stock
+        ];
+
+        return response()->json($data, 200);
     }
 
     /**
@@ -50,7 +60,7 @@ class StockController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages());
         }
-        // dd(Auth::user()->id);
+
         Stock::create([
             'nama_produk' => request('nama_produk'),
             'harga_beli' => request('harga_beli'),
@@ -61,7 +71,7 @@ class StockController extends Controller
             'user_name_input' => Auth::user()->id,
         ]);
         return response()->json([
-            'success' => true,
+            'message' => 'Data berhasil ditambahkan',
         ]);
     }
 
