@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\StockController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,12 @@ Route::group([
 ], function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
+    // ! USER
     Route::post('user', [AuthController::class, 'user']);
+    // ! STOCK
     Route::post('tambah_stock', [StockController::class, 'store']);
+    Route::post('update', [StockController::class, 'update']);
     Route::get('stock', [StockController::class, 'index']);
+    // ! KERANJANG
+    Route::post('keranjang', [KeranjangController::class, 'store']);
 });

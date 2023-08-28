@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+
 class JwtMiddleware
 {
     /**
@@ -23,11 +24,11 @@ class JwtMiddleware
     public function handle(Request $request, Closure $next)
     {
         try {
+
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
+
             if ($e instanceof TokenInvalidException) {
-
-
                 return response()->json(['status' => "Token Tidak Valid"]);
             } elseif ($e instanceof TokenExpiredException) {
                 return response()->json(['status' => 'Token Kadaluarsa']);

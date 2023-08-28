@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Optional extends Model
+class JenisUsaha extends Model
 {
     use HasFactory;
-    protected $table = 'optional';
-    protected $fillable = [
-        'nama_barang',
-        'jumlah',
-    ];
 }

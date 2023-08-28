@@ -18,8 +18,10 @@ class StockController extends Controller
      */
     public function index()
     {
+        $user = Auth::user()->toko_id;
         $stock = DB::table('stock')
             ->select('*')
+            ->where("user_name_input", $user)
             ->get();
 
         $data = [
@@ -68,7 +70,7 @@ class StockController extends Controller
             'isi_per_pack' => request('isi_per_pack'),
             'harga_per_pcs' => request('harga_per_pcs'),
             'harga_per_pack' => request('harga_per_pack'),
-            'user_name_input' => Auth::user()->id,
+            'user_name_input' => Auth::user()->toko_id,
         ]);
         return response()->json([
             'message' => 'Data berhasil ditambahkan',
@@ -94,7 +96,6 @@ class StockController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -104,9 +105,25 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->query('id');
+
+        Stock::whereId($id)->update([
+            'kuantiti' => request('kuantiti'),
+        ]);
+        // Stock::whereId($id)([
+        //     'id'=>$id,
+        //     'nama_produk' => request('nama_produk'),
+        //     'harga_beli' => request('harga_beli'),
+        //     'isi_per_pack' => request('isi_per_pack'),
+        //     'harga_per_pcs' => request('harga_per_pcs'),
+        //     'harga_per_pack' => request('harga_per_pack'),
+        //     'user_name_input' => Auth::user()->toko_id,
+        // ]);
+        return response()->json([
+            'message' => 'Data berhasil DIUBAH',
+        ]);
     }
 
     /**
