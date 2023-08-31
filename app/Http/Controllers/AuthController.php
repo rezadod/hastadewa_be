@@ -23,46 +23,50 @@ class AuthController extends Controller
 
     public function register()
     {
-        $validator = Validator::make(request()->all(), [
-            'username' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'nama_pemilik_toko' => 'required',
-            'no_hp' => 'required',
-            'nama_toko' => 'required',
-            'alamat' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages());
-        }
-
-        $toko = Toko::create([
-            'nama_toko' => request('nama_toko'),
-            'nama_pemilik_toko' => request('nama_pemilik_toko'),
-            'status_toko' => 1,
-            'jenis_usaha' => 1,
-            'alamat' => request('alamat'),
-        ]);
-
-        // dd($toko->id);
-        $user = User::create([
-            'email' => request("email"),
-            'password' => Hash::make(
-                request("password"),
-            ),
-            'no_hp' => request("no_hp"),
-            'toko_id' => $toko->id,
-            'role_id' => 1,
-            'username' => request("username"),
-
-        ]);
-
-
-        if ($user) {
-            return response()->json(['message' => 'Successfully registered']);
-        } else {
-            return response()->json(['message' => 'Failed registered']);
+        try {
+            $validator = Validator::make(request()->all(), [
+                'username' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+                'nama_pemilik_toko' => 'required',
+                'no_hp' => 'required',
+                'nama_toko' => 'required',
+                'alamat' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->messages());
+            } elseif (Toko::where('nama_toko', request('nama_toko'))->exists()) {
+                return response()->json(['message' => 'Nama toko sudah dipakai'], 400);
+            } else if (User::where('username', request('username'))->exists()) {
+                return response()->json(['message' => 'Username sudah dipakai'], 400);
+            } else if (User::where('email', request('email'))->exists()) {
+                return response()->json(['message' => 'Email sudah digunakan'], 400);
+            } else {
+                $toko = Toko::create([
+                    'nama_toko' => request('nama_toko'),
+                    'nama_pemilik_toko' => request('nama_pemilik_toko'),
+                    'status_toko' => 1,
+                    'jenis_usaha' => 1,
+                    'alamat' => request('alamat'),
+                ]);
+                $user = User::create([
+                    'email' => request("email"),
+                    'password' => Hash::make(
+                        request("password"),
+                    ),
+                    'no_hp' => request("no_hp"),
+                    'toko_id' => $toko->id,
+                    'role_id' => 2,
+                    'username' => request("username"),
+                ]);
+                if ($user) {
+                    return response()->json(['message' => 'Aku berhasil'], 200);
+                } else {
+                    return response()->json(['message' => 'Failed registered'], 400);
+                }
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th]);
         }
     }
 

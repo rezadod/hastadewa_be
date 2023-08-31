@@ -49,6 +49,22 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
+        // dd(Auth::user()->toko_id);
+        $toko_id = Auth::user()->toko_id;
+
+        $stock = DB::table('stock')
+            ->where("user_name_input", $request->nama_barang)
+            ->where('user_name_input', $toko_id)
+            ->exists();
+
+        // dd($stock);
+
+        // if (Stock::where('nama_barang', request('nama_toko'))->exists()) {
+        //     # code...
+        // }
+
+
+
         $validator = Validator::make(request()->all(), [
             'nama_produk' => 'required',
             'harga_beli' => 'required',
@@ -62,6 +78,11 @@ class StockController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages());
         }
+
+
+
+
+
 
         Stock::create([
             'nama_produk' => request('nama_produk'),

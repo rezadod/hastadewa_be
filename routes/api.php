@@ -29,7 +29,7 @@ Route::group([
     Route::post('user', [AuthController::class, 'user']);
     // ! STOCK
     Route::post('tambah_stock', [StockController::class, 'store']);
-    Route::post('update', [StockController::class, 'update']);
+    Route::post('update_stock', [StockController::class, 'update']);
     Route::get('stock', [StockController::class, 'index']);
     // ! KERANJANG
     Route::post('keranjang', [KeranjangController::class, 'store']);
