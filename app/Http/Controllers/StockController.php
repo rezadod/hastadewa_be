@@ -7,7 +7,9 @@ use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
+use Lcobucci\JWT\Decoder;
+use Lcobucci\JWT\Encoder;
+use PhpParser\JsonDecoder;
 
 class StockController extends Controller
 {
@@ -19,9 +21,9 @@ class StockController extends Controller
     public function index()
     {
         $user = Auth::user()->toko_id;
+        // dd($user);
         $stock = DB::table('stock')
-            ->select('*')
-            ->where("user_name_input", $user)
+            ->where("toko_id", '=', $user)
             ->get();
 
         $data = [
@@ -49,50 +51,36 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        // dd(Auth::user()->toko_id);
-        $toko_id = Auth::user()->toko_id;
+        $user = Auth::user()->toko_id;
 
-        $stock = DB::table('stock')
-            ->where("user_name_input", $request->nama_barang)
-            ->where('user_name_input', $toko_id)
-            ->exists();
+        if (Stock::where('nama_produk', $request->nama_produk)->where('toko_id', $user)->exists()) {
+            return response()->json([
+                'message' => 'Data barang sudah ada',
+            ], 400);
+        } else {
+            $validator = Validator::make(request()->all(), [
+                'nama_produk' => 'required',
+                'harga_beli' => 'required',
+                'kuantiti' => 'required',
+                'isi_per_pack' => 'required',
+                'harga_per_pcs' => 'required',
+                'harga_per_pack' => 'required',
 
-        // dd($stock);
-
-        // if (Stock::where('nama_barang', request('nama_toko'))->exists()) {
-        //     # code...
-        // }
-
-
-
-        $validator = Validator::make(request()->all(), [
-            'nama_produk' => 'required',
-            'harga_beli' => 'required',
-            'kuantiti' => 'required',
-            'isi_per_pack' => 'required',
-            'harga_per_pcs' => 'required',
-            'harga_per_pack' => 'required',
-
-        ]);
-
+            ]);
+            Stock::create([
+                'nama_produk' => request('nama_produk'),
+                'harga_beli' => request('harga_beli'),
+                'kuantiti' => request('kuantiti'),
+                'isi_per_pack' => request('isi_per_pack'),
+                'harga_per_pcs' => request('harga_per_pcs'),
+                'harga_per_pack' => request('harga_per_pack'),
+                'toko_id' => Auth::user()->toko_id,
+                'username_input' => Auth::user()->id,
+            ]);
+        }
         if ($validator->fails()) {
             return response()->json($validator->messages());
         }
-
-
-
-
-
-
-        Stock::create([
-            'nama_produk' => request('nama_produk'),
-            'harga_beli' => request('harga_beli'),
-            'kuantiti' => request('kuantiti'),
-            'isi_per_pack' => request('isi_per_pack'),
-            'harga_per_pcs' => request('harga_per_pcs'),
-            'harga_per_pack' => request('harga_per_pack'),
-            'user_name_input' => Auth::user()->toko_id,
-        ]);
         return response()->json([
             'message' => 'Data berhasil ditambahkan',
         ]);
@@ -145,6 +133,22 @@ class StockController extends Controller
         return response()->json([
             'message' => 'Data berhasil DIUBAH',
         ]);
+    }
+    public function detailKasir(Request $request)
+    {
+        $id = $request->query('id');
+
+        $data_jenis = '[{"id":1,"satuan":"Ecer"},{"id":2,"satuan":"Grosir"}]';
+        $convert = json_decode($data_jenis);
+        $stock = DB::table('stock')
+            ->where("id", '=', $id)
+            ->first();
+        $data = [
+            'data_stock' => $stock,
+            'satuan' => $convert
+        ];
+
+        return response()->json($data,  200);
     }
 
     /**

@@ -15,13 +15,14 @@ return new class extends Migration
     {
         Schema::create('stock', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_produk')->unique();
-            $table->string('harga_beli');
-            $table->string('kuantiti');
-            $table->string('isi_per_pack');
-            $table->string('harga_per_pcs');
-            $table->string('harga_per_pack');
-            $table->string('user_name_input');
+            $table->string('nama_produk');
+            $table->integer('harga_beli');
+            $table->integer('kuantiti');
+            $table->integer('isi_per_pack');
+            $table->integer('harga_per_pcs');
+            $table->integer('harga_per_pack');
+            $table->integer('toko_id');
+            $table->integer('username_input');
             $table->timestamps();
         });
     }

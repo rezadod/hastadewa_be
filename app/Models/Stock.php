@@ -16,6 +16,7 @@ class Stock extends Model
         'isi_per_pack',
         'harga_per_pcs',
         'harga_per_pack',
-        'user_name_input'
+        'username_input',
+        'toko_id',
     ];
 }

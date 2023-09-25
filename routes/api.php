@@ -31,6 +31,7 @@ Route::group([
     Route::post('tambah_stock', [StockController::class, 'store']);
     Route::post('update_stock', [StockController::class, 'update']);
     Route::get('stock', [StockController::class, 'index']);
+    Route::post('detail_stock', [StockController::class, 'detailKasir']);
     // ! KERANJANG
     Route::post('keranjang', [KeranjangController::class, 'store']);
 });
