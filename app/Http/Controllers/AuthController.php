@@ -89,7 +89,7 @@ class AuthController extends Controller
             'data' => auth()->guard('api')->user(),
             'token' => $token,
         ]);
-        // return view('input_stok');
+        return view('dashboard/dashboard');
     }
 
     /**

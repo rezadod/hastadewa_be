@@ -19,6 +19,7 @@ use App\Http\Controllers\StockController;
 Route::get('cek', [UserController::class, 'cek'])->name('cek');
 Route::get('daftar', [UserController::class, 'daftar'])->name('daftar');
 Route::get('masuk', [UserController::class, 'masuk'])->name('masuk');
+Route::get('report_penjualan', [StockController::class, 'report_penjualan'])->name('report_penjualan');
 
 // Route::group(['middleware' => ['auth']], function () {
 // });
