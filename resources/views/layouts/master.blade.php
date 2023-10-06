@@ -61,7 +61,7 @@
                             </a>
 
                             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-                                <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                                <i class="bx bx-chevron-left bx-sm align-middle"><i class="fas fa-arrow-circle-left"></i></i>
                             </a>
                         </div>
 
@@ -124,7 +124,7 @@
                         <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
                             <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                                 <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                                    <i class="bx bx-menu bx-sm"></i>
+                                    <i class="bx bx-menu bx-sm"><i class="fas fa-list"></i></i>
                                 </a>
                             </div>
 
