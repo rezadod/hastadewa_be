@@ -16,10 +16,15 @@ use App\Http\Controllers\StockController;
 |
 */
 
+Route::get('/cek', function () {
+    return response()->json("GASS", 200);
+});
 Route::get('cek', [UserController::class, 'cek'])->name('cek');
 Route::get('daftar', [UserController::class, 'daftar'])->name('daftar');
 Route::get('masuk', [UserController::class, 'masuk'])->name('masuk');
 Route::get('report_penjualan', [StockController::class, 'report_penjualan'])->name('report_penjualan');
+Route::post('report_penjualan_detail', [StockController::class, 'report_penjualan_detail'])->name('report_penjualan_detail');
+Route::post('report_penjualan_tampil', [StockController::class, 'report_penjualan_tampil'])->name('report_penjualan_tampil');
 
 // Route::group(['middleware' => ['auth']], function () {
 // });

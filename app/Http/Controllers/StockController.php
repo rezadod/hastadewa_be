@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Stock;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -188,16 +189,94 @@ class StockController extends Controller
     public function report_penjualan(Request $request)
     {
 
+        $data_penjualan = DB::table('transaksi as a')
+            ->leftJoin('items as b', 'a.id', 'b.kode_transaksi')
+            ->leftJoin('stock as c', 'b.id_barang', 'c.id')
+            ->select(
+                'a.id as invoice',
+                'a.created_at as tanggal',
+                DB::raw('SUM(CASE
+                                    WHEN b.jenis_pembelian = 1 THEN (b.jumlah * c.harga_ecer)
+                                    WHEN b.jenis_pembelian = 2 THEN (b.jumlah * c.harga_grosir)
+                            ELSE 0 END) as harga_total')
+            )
+            ->groupBy('a.id')
+            ->get();
+        // dd($data_penjualan);
         $data_toko = DB::table('toko')
             ->select('*')
             ->get();
 
         $data = [
-            'data_toko' => $data_toko
+            'data_toko' => $data_toko,
+            'data_penjualan' => $data_penjualan,
         ];
 
 
         return view('report_toko', $data);
+    }
+
+    public function report_penjualan_detail(Request $request)
+    {
+        try {
+            $data_detail = DB::table('items as a')
+                ->leftJoin('stock as b', 'a.id_barang', 'b.id')
+                ->leftJoin('jenis_pembelian as c', 'a.jenis_pembelian', 'c.id')
+                ->leftJoin('transaksi as d', 'a.kode_transaksi', 'd.id')
+                ->leftJoin('users as e', 'd.operator', 'e.id')
+                ->select(
+                    'a.id_barang',
+                    'a.id as items_id',
+                    'a.jumlah',
+                    'a.kode_transaksi',
+                    'b.nama_produk',
+                    'c.deskripsi as jenis_pembelian',
+                    'e.username as username_op'
+                )
+                ->where('a.kode_transaksi', $request->invoice)
+                ->get();
+
+            $data = [
+                'data_detail' => $data_detail,
+            ];
+
+
+            return view('report_toko_detail', $data);
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+    public function report_penjualan_tampil(Request $request)
+    {
+        try {
+            $tanggal_1 = $request->tanggal_1;
+            $tanggal_2 = $request->tanggal_2;
+
+            $data_penjualan = DB::table('transaksi as a')
+                ->leftJoin('items as b', 'a.id', 'b.kode_transaksi')
+                ->leftJoin('stock as c', 'b.id_barang', 'c.id')
+                ->select(
+                    'a.id as invoice',
+                    'a.created_at as tanggal',
+                    DB::raw('SUM(CASE
+                                    WHEN b.jenis_pembelian = 1 THEN (b.jumlah * c.harga_ecer)
+                                    WHEN b.jenis_pembelian = 2 THEN (b.jumlah * c.harga_grosir)
+                            ELSE 0 END) as harga_total')
+                )
+                ->whereDate('a.created_at', '>=', $tanggal_1)
+                ->whereDate('a.created_at', '<=', $tanggal_2)
+                ->groupBy('a.id')
+                ->get();
+
+            $data = [
+                'data_penjualan' => $data_penjualan,
+            ];
+
+
+            return view('report_toko_tampil', $data);
+        } catch (Exception $e) {
+            dd($e);
+        }
     }
 
     /**
