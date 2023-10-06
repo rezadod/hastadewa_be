@@ -57,4 +57,9 @@ class UserController extends Controller
 
         return view('tampilan_stok', $data);
     }
+
+    public function register_admin()
+    {
+        return view('auth.daftar_admin');
+    }
 }

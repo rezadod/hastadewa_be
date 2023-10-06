@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Toko;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -69,6 +70,43 @@ class AuthController extends Controller
             return response()->json(['message' => $th]);
         }
     }
+    public function register_admin()
+    {
+        try {
+            $validator = Validator::make(request()->all(), [
+                'username' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8'
+            ]);
+
+            $data_owner = DB::table('users')->where('id', Auth()->id())->first();
+            if ($validator->fails()) {
+                return response()->json($validator->messages());
+            } else if (User::where('username', request('username'))->exists()) {
+                return response()->json(['message' => 'Username sudah dipakai'], 400);
+            } else if (User::where('email', request('email'))->exists()) {
+                return response()->json(['message' => 'Email sudah digunakan'], 400);
+            } else {
+                $user = User::create([
+                    'email' => request("email"),
+                    'password' => Hash::make(
+                        request("password"),
+                    ),
+                    'no_hp' => request("no_hp"),
+                    'toko_id' => $data_owner->toko_id,
+                    'role_id' => 3,
+                    'username' => request("username"),
+                ]);
+                if ($user) {
+                    return response()->json(['message' => 'Admin berhasil didaftarkan'], 200);
+                } else {
+                    return response()->json(['message' => 'Failed registered'], 400);
+                }
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th]);
+        }
+    }
 
     /**
      * Get a JWT via given credentials.
@@ -83,6 +121,12 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
+        session_start();
+        $_SESSION["data_users_lokal"] = auth()->guard('api')->user();
+        $cookie_name = "data_users";
+        $cookie_value = auth()->guard('api')->user();
+        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+        echo "<script>localStorage.setItem('data_users', '$cookie_value');</script>";
 
         return response()->json([
             'success' => true,
