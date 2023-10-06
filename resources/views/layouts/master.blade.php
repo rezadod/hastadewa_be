@@ -11,6 +11,8 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{asset('/img/favicon/favicon.ico')}}" />
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -245,6 +247,7 @@
 
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{asset('template/sneat-1.0.0/assets/vendor/libs/jquery/jquery.js')}}"></script>
 <script src="{{asset('template/sneat-1.0.0/assets/vendor/libs/popper/popper.js')}}"></script>
 <script src="{{asset('template/sneat-1.0.0/assets/vendor/js/bootstrap.js')}}"></script>

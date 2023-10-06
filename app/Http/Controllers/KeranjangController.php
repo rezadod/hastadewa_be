@@ -71,8 +71,17 @@ class KeranjangController extends Controller
                 'kode_transaksi' => $id,
                 'id_barang' => $data['produk_id'],
                 'jumlah' => $data['kuantiti'],
-                'jenis_produk' => $data['jenis_pembelian'],
+                'jenis_pembelian' => $data['jenis_pembelian'],
             ]);
+
+            // get total kuantiti
+            $produk = DB::table('stock')->select('kuantiti')->where('id', $data['produk_id'])->first();
+
+            $sisa_qty = intval($produk->kuantiti) - intval($data['kuantiti']);
+
+            // update kuantiti
+
+            DB::table('stock')->where('id', $data['produk_id'])->update(['kuantiti' => $sisa_qty]);
         };
 
 
