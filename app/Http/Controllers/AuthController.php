@@ -121,12 +121,12 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        session_start();
-        $_SESSION["data_users_lokal"] = auth()->guard('api')->user();
-        $cookie_name = "data_users";
-        $cookie_value = auth()->guard('api')->user();
-        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-        echo "<script>localStorage.setItem('data_users', '$cookie_value');</script>";
+        // session_start();
+        // $_SESSION["data_users_lokal"] = auth()->guard('api')->user();
+        // $cookie_name = "data_users";
+        // $cookie_value = auth()->guard('api')->user();
+        // setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+        // echo "<script>localStorage.setItem('data_users', '$cookie_value');</script>";
 
         return response()->json([
             'success' => true,
