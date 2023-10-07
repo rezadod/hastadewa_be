@@ -61,7 +61,7 @@
                             </a>
 
                             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-                                <i class="bx bx-chevron-left bx-sm align-middle"><i class="fas fa-arrow-circle-left"></i></i>
+                                <i class="bx bx-chevron-left bx-sm align-middle"><i class="fas fa-arrow-circle-left px-1 pt-1"></i></i>
                             </a>
                         </div>
 
