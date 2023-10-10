@@ -62,4 +62,9 @@ class UserController extends Controller
     {
         return view('auth.daftar_admin');
     }
+
+    public function welcome()
+    {
+        return view('landing_page.welcome_new');
+    }
 }

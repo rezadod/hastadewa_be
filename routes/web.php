@@ -58,3 +58,6 @@ Route::group([
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('welcome', [UserController::class, 'welcome'])->name('welcome');
+
