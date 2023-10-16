@@ -113,8 +113,9 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
+
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
@@ -128,12 +129,17 @@ class AuthController extends Controller
         // setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
         // echo "<script>localStorage.setItem('data_users', '$cookie_value');</script>";
 
-        // return response()->json([
-        //     'success' => true,
-        //     'data' => auth()->guard('api')->user(),
-        //     'token' => $token,
-        // ]);
-        return view('dashboard/dashboard');
+        if (preg_match('/api/', $request->server('REQUEST_URI'))) {
+            return response()->json([
+                'success' => true,
+                'data' => auth()->guard('api')->user(),
+                'token' => $token,
+            ]);
+            // dd($request, "API");
+        } else {
+            return view('dashboard/dashboard');
+            // dd($request, "WEB");
+        }
     }
 
     /**
