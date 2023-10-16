@@ -14,9 +14,11 @@ class Stock extends Model
         'harga_beli',
         'kuantiti',
         'isi_per_pack',
-        'harga_per_pcs',
-        'harga_per_pack',
-        'username_input',
+        'harga_grosir',
+        'harga_ecer',
+        'satuan_grosir',
+        'satuan_ecer',
         'toko_id',
+        'user_name_input',
     ];
 }

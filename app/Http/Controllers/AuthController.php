@@ -128,11 +128,11 @@ class AuthController extends Controller
         // setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
         // echo "<script>localStorage.setItem('data_users', '$cookie_value');</script>";
 
-        return response()->json([
-            'success' => true,
-            'data' => auth()->guard('api')->user(),
-            'token' => $token,
-        ]);
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => auth()->guard('api')->user(),
+        //     'token' => $token,
+        // ]);
         return view('dashboard/dashboard');
     }
 
