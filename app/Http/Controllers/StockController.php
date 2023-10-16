@@ -93,7 +93,7 @@ class StockController extends Controller
                 'satuan_grosir' => request('satuan_grosir'),
                 'satuan_ecer' => request('satuan_ecer'),
                 'toko_id' => Auth::user()->toko_id,
-                'username_input' => Auth::user()->id,
+                'user_name_input' => Auth::user()->id,
             ]);
         }
         if ($validator->fails()) {
@@ -158,26 +158,18 @@ class StockController extends Controller
 
         $id = $request->query('id');
 
-        // $jenis_satuan_ecer = DB::table('stock')
-        //     ->leftJoin('satuan_ecer', 'stock.satuan_ecer', 'satuan_ecer.id')
-        //     ->select('satuan_ecer.nama_satuan')
-        //     ->where("stock.id", '=', $id)
-        //     ->first();
-
-        // dd($jenis_satuan_ecer->nama_satuan);
-
-        // dd($jenis_satuan);
         $harga = DB::table('stock')
             ->select('harga_grosir', 'harga_ecer')
             ->first();
 
-        $data_jenis = '[{"id":1,"satuan":"Ecer","harga":' . $harga->harga_grosir . '},{"id":2,"satuan":"Grosir","harga":' . $harga->harga_ecer . '}]';
-        $convert = json_decode($data_jenis);
+      
         $stock = DB::table('stock')
             ->where("stock.id", '=', $id)
             ->leftJoin('satuan_ecer', 'stock.satuan_ecer', 'satuan_ecer.id')
             ->select('satuan_ecer.nama_satuan', 'stock.*')
             ->first();
+            $data_jenis = '[{"id":1,"satuan":"Ecer","harga":' . $stock->harga_grosir . '},{"id":2,"satuan":"Grosir","harga":' . $stock->harga_ecer . '}]';
+            $convert = json_decode($data_jenis);
         $data = [
             'data_stock' => $stock,
             'satuan' => $convert
