@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StockController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,6 @@ Route::group([
     // ! KERANJANG
     Route::post('keranjang', [KeranjangController::class, 'store']);
     Route::get('invoice', [KeranjangController::class, 'invoice']);
+    // ! REPORT
+    Route::get('report', [ReportController::class, 'report']);
 });

@@ -19,12 +19,20 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user()->toko_id;
 
+        $keyword = $request->keyword;
+        $page = $request->page;
+        $limit = 5;
+        $offset = ($page - 1) * $limit;
+
         $stock = DB::table('stock')
-            ->where("toko_id", '=', $user)
+            // ->where("toko_id", '=', $user)
+            ->where('nama_produk', 'like', '%' . $keyword . '%')
+            ->limit($limit)
+            ->offset($offset)
             ->get();
 
         $data = [
@@ -162,14 +170,14 @@ class StockController extends Controller
             ->select('harga_grosir', 'harga_ecer')
             ->first();
 
-      
+
         $stock = DB::table('stock')
             ->where("stock.id", '=', $id)
             ->leftJoin('satuan_ecer', 'stock.satuan_ecer', 'satuan_ecer.id')
             ->select('satuan_ecer.nama_satuan', 'stock.*')
             ->first();
-            $data_jenis = '[{"id":1,"satuan":"Ecer","harga":' . $stock->harga_grosir . '},{"id":2,"satuan":"Grosir","harga":' . $stock->harga_ecer . '}]';
-            $convert = json_decode($data_jenis);
+        $data_jenis = '[{"id":1,"satuan":"Ecer","harga":' . $stock->harga_grosir . '},{"id":2,"satuan":"Grosir","harga":' . $stock->harga_ecer . '}]';
+        $convert = json_decode($data_jenis);
         $data = [
             'data_stock' => $stock,
             'satuan' => $convert
