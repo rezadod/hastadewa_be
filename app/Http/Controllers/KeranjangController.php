@@ -112,6 +112,10 @@ class KeranjangController extends Controller
                     'a.jumlah as kuantiti',
                     'c.deskripsi as jenis_pembelian',
                     DB::raw('(CASE
+                                    WHEN a.jenis_pembelian = 1 THEN b.harga_ecer
+                                    WHEN a.jenis_pembelian = 2 THEN b.harga_grosir
+                            ELSE 0 END) as harga'),
+                    DB::raw('(CASE
                                     WHEN a.jenis_pembelian = 1 THEN s_ec.nama_satuan
                                     WHEN a.jenis_pembelian = 2 THEN s_gs.nama_satuan
                             ELSE 0 END) as satuan')
@@ -139,6 +143,10 @@ class KeranjangController extends Controller
                 $total_harga += $row->harga_total;
             }
 
+            $no = 1;
+            foreach ($data_invoice as $inv) {
+                $inv->nomor = $no++;
+            }
             $data = [
                 'id' => $id,
                 'invoice' => $data_invoice,
@@ -156,7 +164,7 @@ class KeranjangController extends Controller
                 'line' => $e->getLine()
             ];
 
-            return response()->json($data, 200);
+            return response()->json($data, 400);
         }
     }
 
